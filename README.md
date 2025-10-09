@@ -1,2 +1,7 @@
-bunx gitpick imattdunbar/dunbar-tss-template/base PROJECT_NAME
-bunx gitpick imattdunbar/dunbar-tss-template/cloudflare PROJECT_NAME
+## Base Template
+
+bunx gitpick imattdunbar/dunbar-tss-template/tree/main/base PROJECT_NAME
+
+## Cloudflare Template
+
+bunx gitpick imattdunbar/dunbar-tss-template/tree/main/cloudflare PROJECT_NAME
