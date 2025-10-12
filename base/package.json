@@ -11,14 +11,14 @@
     "@tanstack/react-query": "^5.90.2",
     "@tanstack/react-router": "^1.132.47",
     "@tanstack/react-router-ssr-query": "^1.132.47",
-    "@tanstack/react-start": "^1.132.51",
+    "@tanstack/react-start": "^1.132.53",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "zod": "^4.1.12"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",
-    "@tanstack/react-devtools": "^0.7.4",
+    "@tanstack/react-devtools": "^0.7.6",
     "@tanstack/react-query-devtools": "^5.90.2",
     "@tanstack/react-router-devtools": "^1.132.51",
     "@types/react": "^19.2.2",
