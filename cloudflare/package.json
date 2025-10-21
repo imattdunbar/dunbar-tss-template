@@ -15,10 +15,10 @@
     "cf:types": "wrangler types"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.90.2",
-    "@tanstack/react-router": "^1.132.47",
-    "@tanstack/react-router-ssr-query": "^1.132.47",
-    "@tanstack/react-start": "^1.132.53",
+    "@tanstack/react-query": "^5.90.5",
+    "@tanstack/react-router": "^1.133.20",
+    "@tanstack/react-router-ssr-query": "^1.133.20",
+    "@tanstack/react-start": "^1.133.20",
     "drizzle-kit": "^0.31.5",
     "drizzle-orm": "^0.44.6",
     "drizzle-zod": "^0.8.3",
@@ -27,22 +27,22 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.13.12",
+    "@cloudflare/vite-plugin": "^1.13.13",
     "@libsql/client": "^0.15.15",
-    "@tailwindcss/vite": "^4.1.14",
-    "@tanstack/react-devtools": "^0.7.6",
+    "@tailwindcss/vite": "^4.1.15",
+    "@tanstack/react-devtools": "^0.7.7",
     "@tanstack/react-query-devtools": "^5.90.2",
-    "@tanstack/react-router-devtools": "^1.132.51",
-    "@types/node": "^24.7.2",
+    "@tanstack/react-router-devtools": "^1.133.20",
+    "@types/node": "^24.9.1",
     "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.1",
+    "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^4.7.0",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
-    "tailwindcss": "^4.1.14",
+    "tailwindcss": "^4.1.15",
     "typescript": "^5.9.3",
-    "vite": "^7.1.9",
+    "vite": "^7.1.11",
     "vite-tsconfig-paths": "^5.1.4",
-    "wrangler": "^4.42.2"
+    "wrangler": "^4.43.0"
   }
 }
