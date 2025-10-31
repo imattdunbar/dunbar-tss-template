@@ -26,7 +26,12 @@ export default defineConfig({
       projects: ['./tsconfig.json']
     }),
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart({
+      router: {
+        // allows _layout.tsx to be for layouts instead of route.tsx
+        routeToken: '_layout'
+      }
+    }),
     buildPlugin,
     viteReact()
   ]

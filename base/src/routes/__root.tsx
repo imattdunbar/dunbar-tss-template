@@ -1,9 +1,7 @@
 import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { RouterContext } from '@/router'
-import { TanStackDevtools } from '@tanstack/react-devtools'
-import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { defaultHead } from '@/utils/seo'
+import { defaultHead } from '@/core/utils/seo'
+import Devtools from '@/core/components/Devtools'
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   head: defaultHead,
@@ -18,21 +16,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        {import.meta.env.DEV && (
-          <TanStackDevtools
-            config={{ hideUntilHover: true }}
-            plugins={[
-              {
-                name: 'TanStack Query',
-                render: <ReactQueryDevtoolsPanel />
-              },
-              {
-                name: 'TanStack Router',
-                render: <TanStackRouterDevtoolsPanel />
-              }
-            ]}
-          />
-        )}
+        <Devtools />
         <Scripts />
       </body>
     </html>
