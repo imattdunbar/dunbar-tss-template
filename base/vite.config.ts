@@ -10,9 +10,7 @@ import { nitro } from 'nitro/vite'
 const buildPlugin =
   process.env.NODE_ENV === 'production'
     ? nitro({
-        config: {
-          preset: 'bun'
-        }
+        preset: 'bun'
       })
     : undefined
 
