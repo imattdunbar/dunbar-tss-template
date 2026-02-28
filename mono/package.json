@@ -1,0 +1,41 @@
+{
+  "name": "dunbar-mono-template",
+  "type": "module",
+  "private": true,
+  "packageManager": "bun@1.3.9",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "web": "bun --cwd packages/web",
+    "shared": "bun --cwd packages/shared",
+    "format": "bun run prettier --write . --log-level silent"
+  },
+  "catalog": {
+    "@tanstack/react-query": "^5.90.20",
+    "dayjs": "^1.11.19",
+    "@types/bun": "^1.3.9",
+    "@types/node": "^25.2.3",
+    "uuid": "^13.0.0",
+    "typescript": "^5.9.3",
+    "zod": "^4.3.6",
+    "zustand": "^5.0.11",
+    "drizzle-orm": "^0.45.1",
+    "drizzle-zod": "^0.8.3"
+  },
+  "devDependencies": {
+    "@types/bun": "catalog:",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "semi": false,
+    "printWidth": 120,
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
+  }
+}

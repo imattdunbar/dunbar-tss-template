@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tanstack-start-app",
+  "compatibility_date": "2025-09-02",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@tanstack/react-start/server-entry",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "template-db",
+      "database_id": "276655c3-a5e0-4af5-abd7-baab7b103c35",
+      "migrations_dir": "./src/db/migrations"
+    }
+  ]
+}
