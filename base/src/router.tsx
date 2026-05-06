@@ -17,6 +17,7 @@ export const getRouter = () => {
     defaultPreload: 'intent',
     scrollRestoration: true,
     notFoundMode: 'root',
+    defaultViewTransition: true,
     defaultNotFoundComponent: () => Navigate({ to: '/' }),
     defaultErrorComponent: () => Navigate({ to: '/' })
   })

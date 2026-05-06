@@ -4,15 +4,6 @@ import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { nitro } from 'nitro/vite'
 
-// Nitro for bun/vercel deployments
-// Cloudflare is different: https://tanstack.com/start/latest/docs/framework/react/hosting#cloudflare-workers
-const buildPlugin =
-  process.env.NODE_ENV === 'production'
-    ? nitro({
-        preset: 'bun'
-      })
-    : undefined
-
 export default defineConfig({
   server: {
     port: 7777,
@@ -29,7 +20,7 @@ export default defineConfig({
         routeToken: '_layout'
       }
     }),
-    buildPlugin,
+    nitro({ preset: 'bun' }),
     viteReact()
   ]
 })
