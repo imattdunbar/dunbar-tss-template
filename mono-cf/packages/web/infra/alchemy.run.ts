@@ -19,6 +19,7 @@ export const Website = Cloudflare.Website.Vite(
   Alchemy.Stage.pipe(
     Effect.map((stage) => ({
       name: stage === 'prod' ? PROJECT_NAME : `${PROJECT_NAME}-${stage}`,
+      main: './src/entry.ts',
       dev: {
         host: '0.0.0.0',
         port: 7777,

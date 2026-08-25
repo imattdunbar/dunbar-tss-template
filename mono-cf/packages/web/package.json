@@ -11,9 +11,7 @@
     "deploy:dev": "alchemy deploy infra/alchemy.run.ts --stage dev",
     "deploy:prod": "alchemy deploy infra/alchemy.run.ts --stage prod",
     "db:generate": "drizzle-kit generate --config src/db/config.ts",
-    "db:studio:local": "zsh -ic 'local-studio sqlite --schema ../shared/db/schema.ts'",
-    "db:studio:dev": "zsh -ic 'local-studio d1 853b9b0d-fccd-4d92-bf43-8d3a5170a189 --schema ../shared/db/schema.ts'",
-    "db:studio:prod": "zsh -ic 'local-studio d1 27f8944a-e9b3-4ed0-960e-798620e6099c --schema ../shared/db/schema.ts'"
+    "db:studio:local": "zsh -ic 'local-studio sqlite --schema ../shared/db/schema.ts'"
   },
   "dependencies": {
     "@dunbar/ui": "workspace:*",
