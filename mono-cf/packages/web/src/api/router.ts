@@ -14,7 +14,7 @@ const createItem = os.items.create.handler(async ({ input }) => {
     .insert(schema.items)
     .values({
       id: crypto.randomUUID(),
-      name: input.name
+      name: input.name.trim()
     })
     .returning()
 
@@ -23,9 +23,33 @@ const createItem = os.items.create.handler(async ({ input }) => {
   return item
 })
 
+const triggerValidationError = os.examples.errors.validation.handler(() => ({ success: true as const }))
+
+const triggerNotFoundError = os.examples.errors.notFound.handler(({ errors }) => {
+  throw errors.NOT_FOUND()
+})
+
+const triggerConflictError = os.examples.errors.conflict.handler(({ errors }) => {
+  throw errors.CONFLICT()
+})
+
+const triggerInternalError = os.examples.errors.internal.handler(() => {
+  throw new Error('Example internal failure', {
+    cause: new Error('Example root cause')
+  })
+})
+
 export const apiRouter = os.router({
   items: {
     list: listItems,
     create: createItem
+  },
+  examples: {
+    errors: {
+      validation: triggerValidationError,
+      notFound: triggerNotFoundError,
+      conflict: triggerConflictError,
+      internal: triggerInternalError
+    }
   }
 })

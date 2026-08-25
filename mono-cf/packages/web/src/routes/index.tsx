@@ -4,6 +4,7 @@ import { Button } from '@dunbar/ui/components/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@dunbar/ui/components/card'
 import { Input } from '@dunbar/ui/components/input'
 import { useState, type SubmitEvent } from 'react'
+import { ServerErrorTest } from '@/core/components/ServerErrorTest'
 import { orpc } from '@/core/orpc'
 
 export const Route = createFileRoute('/')({
@@ -84,6 +85,8 @@ function App() {
             {createItem.error ? <p className="text-destructive mt-3 text-sm">{createItem.error.message}</p> : null}
           </CardContent>
         </Card>
+
+        <ServerErrorTest />
 
         <Card>
           <CardHeader>
