@@ -4,7 +4,11 @@ bunx gitpick imattdunbar/dunbar-tss-template/tree/main/base PROJECT_NAME
 
 ## Cloudflare Template
 
-bunx gitpick imattdunbar/dunbar-tss-template/tree/main/cloudflare PROJECT_NAME
+```bash
+bunx gitpick imattdunbar/dunbar-tss-template/tree/main/mono-cf PROJECT_NAME
+cd PROJECT_NAME
+bun init-project
+```
 
 ## Prisma + Elysia + Bun Template
 

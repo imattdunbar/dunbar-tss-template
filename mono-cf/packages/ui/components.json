@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "base-nova",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "zinc",
+    "cssVariables": true
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@dunbar/ui/components",
+    "hooks": "@dunbar/ui/hooks",
+    "lib": "@dunbar/ui/lib",
+    "utils": "@dunbar/ui/lib/utils",
+    "ui": "@dunbar/ui/components"
+  },
+  "rtl": false,
+  "menuColor": "default-translucent",
+  "menuAccent": "subtle",
+  "registries": {}
+}

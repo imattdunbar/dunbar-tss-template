@@ -1,0 +1,27 @@
+{
+  "name": "@dunbar/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./api/*": "./api/*.ts",
+    "./db/*": "./db/*.ts",
+    "./util/*": "./util/*.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@orpc/client": "catalog:",
+    "@orpc/contract": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "drizzle-orm": "catalog:",
+    "drizzle-zod": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@types/bun": "catalog:",
+    "typescript": "catalog:"
+  }
+}
