@@ -1,0 +1,17 @@
+node_modules
+.DS_Store
+
+.alchemy
+.output
+.tanstack
+.wrangler
+dist
+tmp
+
+.env
+.env.*
+!.env.example
+
+*.tsbuildinfo
+package-lock.json
+yarn.lock

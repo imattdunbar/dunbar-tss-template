@@ -1,0 +1,39 @@
+{
+  "name": "@dunbar/web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --cwd ../api dev",
+    "build": "vite build && tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@dunbar/api": "workspace:*",
+    "@dunbar/ui": "workspace:*",
+    "@dunbar/shared": "workspace:*",
+    "@orpc/server": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260825.1",
+    "@tailwindcss/vite": "catalog:",
+    "@tanstack/react-devtools": "^0.10.12",
+    "@tanstack/react-query-devtools": "5.102.3",
+    "@tanstack/react-router-devtools": "^1.167.1",
+    "@types/bun": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}
