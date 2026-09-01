@@ -1,6 +1,7 @@
 import * as Alchemy from 'alchemy'
 import * as Cloudflare from 'alchemy/Cloudflare'
 import * as Effect from 'effect/Effect'
+import * as Layer from 'effect/Layer'
 
 const PROJECT_NAME = 'dunbar-template'
 
@@ -34,11 +35,22 @@ export const Website = Cloudflare.Website.Vite(
 
 export type WebsiteEnv = Cloudflare.InferEnv<typeof Website>
 
+const state = Layer.unwrap(
+  Effect.gen(function* () {
+    const stage = yield* Alchemy.Stage
+
+    // Use localState for local dev environment, otherwise key state will be stored remotely even for local environments
+    if (stage === 'local') return Alchemy.localState()
+
+    return Cloudflare.state()
+  })
+)
+
 export default Alchemy.Stack(
   PROJECT_NAME,
   {
     providers: Cloudflare.providers(),
-    state: Cloudflare.state()
+    state
   },
   Effect.gen(function* () {
     const database = yield* Database
