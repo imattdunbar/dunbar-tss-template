@@ -1,0 +1,21 @@
+{
+  "name": "@dunbar/shared-template",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./api/client": "./api/client.ts",
+    "./api/query": "./api/query.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@orpc/client": "catalog:",
+    "@orpc/tanstack-query": "catalog:"
+  },
+  "devDependencies": {
+    "@orpc/server": "catalog:",
+    "typescript": "catalog:",
+    "zod": "catalog:"
+  }
+}

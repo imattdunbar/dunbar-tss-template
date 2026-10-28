@@ -1,15 +1,10 @@
-## Base Template
+# Base Template
 
-bunx gitpick imattdunbar/dunbar-tss-template/tree/main/base PROJECT_NAME
-
-## Cloudflare Template
-
-```bash
-bunx gitpick imattdunbar/dunbar-tss-template/tree/main/mono-cf PROJECT_NAME
+```sh
+bunx gitpick imattdunbar/dunbar-tss-template/tree/main PROJECT_NAME
 cd PROJECT_NAME
-bun init-project
 ```
 
-## Prisma + Elysia + Bun Template
+Tell your coding agent:
 
-bunx gitpick imattdunbar/dunbar-tss-template/tree/main/prisma-elysia-bun PROJECT_NAME
+> Read `skills/project-init/SKILL.md` and initialize this project.

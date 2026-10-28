@@ -1,0 +1,9 @@
+node_modules
+dist
+.tanstack
+.output
+.alchemy
+.env
+.env.*
+!.env.example
+/packages/shared/api/generated/

@@ -1,0 +1,52 @@
+{
+  "name": "@dunbar/base-template",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.4",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun dev.ts",
+    "dev:types": "tsdown --watch",
+    "dev:web": "bun run web dev",
+    "web": "bun --cwd packages/web",
+    "ui": "bun --cwd packages/ui",
+    "format": "bunx oxfmt",
+    "typecheck": "tsc --noEmit -p tsconfig.json && bun run --filter './packages/*' typecheck"
+  },
+  "devDependencies": {
+    "@types/bun": "catalog:",
+    "oxfmt": "^0.75.0",
+    "tsdown": "^0.23.3",
+    "typescript": "catalog:"
+  },
+  "catalog": {
+    "@orpc/client": "2.0.0-beta.47",
+    "@orpc/contract": "2.0.0-beta.47",
+    "@orpc/openapi": "2.0.0-beta.47",
+    "@orpc/server": "2.0.0-beta.47",
+    "@orpc/tanstack-query": "2.0.0-beta.47",
+    "@orpc/zod": "2.0.0-beta.47",
+    "hono": "^4.13.14",
+    "@tailwindcss/vite": "^4.3.3",
+    "@tanstack/react-query": "^5.101.4",
+    "@tanstack/react-router": "^1.170.27",
+    "@tanstack/router-plugin": "^1.168.30",
+    "dayjs": "^1.11.23",
+    "@types/bun": "^1.4.4",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "zod": "^4.6.7",
+    "zustand": "^5.0.16",
+    "drizzle-orm": "1.0.0-rc.5-ab785fc",
+    "better-auth": "1.7.14"
+  }
+}
