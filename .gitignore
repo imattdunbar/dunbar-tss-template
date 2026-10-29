@@ -6,4 +6,3 @@ dist
 .env
 .env.*
 !.env.example
-/packages/shared/api/generated/

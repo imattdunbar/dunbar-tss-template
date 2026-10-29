@@ -24,7 +24,12 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
+    "noPropertyAccessFromIndexSignature": false,
+
+    // Monorepo aliases: each package gets a unique prefix so any package can resolve another's source.
+    "paths": {
+      "@web/*": ["./packages/web/src/*"]
+    }
   },
   "include": ["*.ts"]
 }

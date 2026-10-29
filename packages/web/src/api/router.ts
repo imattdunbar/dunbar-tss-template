@@ -1,7 +1,7 @@
 import { openapi } from '@orpc/openapi'
 import { os } from '@orpc/server'
 import { z } from 'zod'
-import { apiErrors } from '@/api/errors'
+import { apiErrors } from '@web/api/errors'
 
 export type ApiContext = {
   headers: Headers

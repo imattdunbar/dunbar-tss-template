@@ -1,9 +1,9 @@
 import { QueryClient } from '@tanstack/react-query'
 import { createRouter } from '@tanstack/react-router'
 import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query'
-import { ErrorPage } from '@/components/ErrorPage'
-import { NotFoundPage } from '@/components/NotFoundPage'
-import { routeTree } from '@/routeTree.gen'
+import { ErrorPage } from '@web/components/ErrorPage'
+import { NotFoundPage } from '@web/components/NotFoundPage'
+import { routeTree } from '@web/routeTree.gen'
 
 export type RouterContext = {
   queryClient: QueryClient

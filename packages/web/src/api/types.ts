@@ -1,5 +1,5 @@
 import type { RouterClient } from '@orpc/server'
-import type { apiRouter } from '@/api/router'
+import type { apiRouter } from '@web/api/router'
 
 export type ApiClient = RouterClient<typeof apiRouter>
 

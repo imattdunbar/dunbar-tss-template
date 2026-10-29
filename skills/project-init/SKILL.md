@@ -42,11 +42,11 @@ Do not replace unrelated text globally.
 - Preserve local edits, comments, and unrelated configuration.
 - Preserve dependency versions, catalog entries, and exact pins.
 - Preserve workspace:* and catalog: dependency references.
-- Preserve @/ aliases and the generated API type boundary.
+- Preserve @web/ aliases and the API type import in packages/shared.
 - Preserve demo components and routes.
 - Do not regenerate or restyle shadcn components.
 - Do not edit bun.lock directly.
-- Do not edit routeTree.gen.ts or packages/shared/api/generated.
+- Do not edit routeTree.gen.ts.
 - Skip node_modules, .git, .alchemy, and build output.
 - Exclude this skill from template identifier replacements and residual-reference checks.
 - Do not delete files except for the final skill cleanup below.
@@ -58,16 +58,15 @@ Do not replace unrelated text globally.
 Run these commands from the repository root:
 
 1. Run `bun install`.
-2. Run `bunx tsdown`.
-3. Run `bun run typecheck`.
-4. Fix errors introduced by initialization.
-5. After fixes, repeat declaration generation and the typecheck.
-6. Confirm that active source and configuration contain no obsolete template identifiers.
-7. If any required step fails, retain the skill and report the failure.
-8. After all steps succeed, delete skills/project-init/.
-9. If skills/ is empty, delete it.
-10. If other files remain in skills/, request approval before their removal.
-11. Report the final project identity and verification results.
+2. Run `bun run typecheck`.
+3. Fix errors introduced by initialization.
+4. After fixes, repeat the typecheck.
+5. Confirm that active source and configuration contain no obsolete template identifiers.
+6. If any required step fails, retain the skill and report the failure.
+7. After all steps succeed, delete skills/project-init/.
+8. If skills/ is empty, delete it.
+9. If other files remain in skills/, request approval before their removal.
+10. Report the final project identity and verification results.
 
 Do not claim runtime verification from a typecheck alone.
 Do not report successful initialization if a required command fails.

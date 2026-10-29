@@ -2,8 +2,8 @@ import { createApiClient, createApiQueryUtils, type ApiClient } from '@dunbar/sh
 import { createRouterClient } from '@orpc/server'
 import { createIsomorphicFn } from '@tanstack/react-start'
 import { getRequestHeaders } from '@tanstack/react-start/server'
-import { createApiErrorInterceptor } from '@/api/errors'
-import { apiRouter } from '@/api/router'
+import { createApiErrorInterceptor } from '@web/api/errors'
+import { apiRouter } from '@web/api/router'
 
 const getApiClient = createIsomorphicFn()
   .server((): ApiClient =>

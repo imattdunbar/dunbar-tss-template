@@ -8,10 +8,10 @@ import {
   createApiErrorInterceptor,
   createApiErrorResponse,
   createApiHandlerErrorInterceptor
-} from '@/api/errors'
+} from '@web/api/errors'
 import { OpenAPIGenerator } from '@orpc/openapi'
 import { ZodToJsonSchemaConverter } from '@orpc/zod'
-import { apiRouter, type ApiContext } from '@/api/router'
+import { apiRouter, type ApiContext } from '@web/api/router'
 
 export const app = new Hono({ strict: false }).basePath('/api')
 const errorInterceptor = createApiErrorInterceptor(import.meta.env.DEV)

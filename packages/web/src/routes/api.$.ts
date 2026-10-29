@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { app } from '@/api'
+import { app } from '@web/api'
 
 export const Route = createFileRoute('/api/$')({
   server: {

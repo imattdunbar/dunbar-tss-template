@@ -7,18 +7,15 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "bun dev.ts",
-    "dev:types": "tsdown --watch",
-    "dev:web": "bun run web dev",
+    "dev": "bun run web dev",
     "web": "bun --cwd packages/web",
     "ui": "bun --cwd packages/ui",
     "format": "bunx oxfmt",
-    "typecheck": "tsc --noEmit -p tsconfig.json && bun run --filter './packages/*' typecheck"
+    "typecheck": "bun run --filter './packages/*' typecheck"
   },
   "devDependencies": {
     "@types/bun": "catalog:",
     "oxfmt": "^0.75.0",
-    "tsdown": "^0.23.3",
     "typescript": "catalog:"
   },
   "catalog": {
