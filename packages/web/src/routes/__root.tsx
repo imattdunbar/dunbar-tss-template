@@ -1,6 +1,6 @@
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
-import type { RouterContext } from '@/router'
+import type { RouterContext } from '@web/router'
 import stylesheet from '@dunbar/ui-template/globals.css?url'
 
 export const Route = createRootRouteWithContext<RouterContext>()({
