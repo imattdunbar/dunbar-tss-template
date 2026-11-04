@@ -97,7 +97,7 @@ function TestAuthPage() {
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="grid gap-2">
           <h1 className="text-2xl font-semibold">Test auth</h1>
-          <p className="text-muted-foreground text-sm">Email and password authentication backed by D1.</p>
+          <p className="text-muted-foreground text-sm">Email and password authentication backed by PostgreSQL.</p>
         </div>
         <Link to="/" className={buttonVariants({ variant: 'outline' })}>
           Home

@@ -15,9 +15,11 @@ export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, {
-    provider: 'sqlite',
+    provider: 'pg',
     schema
   }),
+  // The startup schema check reads `db` outside a request, where the per-request database is unavailable.
+  advanced: { database: { validateSchema: false } },
   emailAndPassword: {
     enabled: true
   },

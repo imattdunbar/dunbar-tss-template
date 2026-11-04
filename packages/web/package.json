@@ -4,11 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "alchemy dev alchemy.run.ts --stage local",
-    "dev:vite": "vite",
     "deploy:dev": "alchemy deploy alchemy.run.ts --stage dev",
     "deploy:prod": "alchemy deploy alchemy.run.ts --stage prod",
     "db:generate:auth": "auth generate --config ./src/api/auth/server.ts --output ./src/db/auth.ts --yes",
     "db:generate": "bun run db:generate:auth && drizzle-kit generate --config src/db/drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config src/db/drizzle.config.ts",
     "build": "vite build",
     "typecheck": "tsc --noEmit"
   },
@@ -27,6 +27,7 @@
     "better-auth": "catalog:",
     "drizzle-orm": "catalog:",
     "hono": "catalog:",
+    "pg": "8.22.0",
     "react": "catalog:",
     "react-dom": "catalog:",
     "zod": "catalog:"
@@ -34,11 +35,13 @@
   "devDependencies": {
     "@alchemy.run/cloudflare": "2.0.0-beta.85",
     "@alchemy.run/frontend-frameworks": "2.0.0-beta.85",
+    "@alchemy.run/planetscale": "2.0.0-beta.85",
     "@cloudflare/workers-types": "5.20261104.1",
     "@effect/platform-bun": "4.1.2",
     "@effect/platform-node": "4.1.2",
     "@tailwindcss/vite": "4.3.4",
     "@types/node": "26.6.6",
+    "@types/pg": "8.23.1",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "6.2.1",

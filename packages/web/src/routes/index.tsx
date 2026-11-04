@@ -31,7 +31,7 @@ function Home() {
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="grid gap-2">
           <h1 className="text-2xl font-semibold">Dunbar Template</h1>
-          <p className="text-muted-foreground text-sm">A simple post example backed by D1.</p>
+          <p className="text-muted-foreground text-sm">A simple post example backed by PostgreSQL.</p>
         </div>
         <nav aria-label="Examples" className="grid gap-2">
           <Link to="/demo" className={buttonVariants({ variant: 'outline' })}>

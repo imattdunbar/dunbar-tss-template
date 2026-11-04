@@ -12,7 +12,7 @@ const postInsertSchema = createInsertSchema(schema.posts, {
   text: field => {
     return field.trim().min(1, 'Enter some text for the post.').max(2000)
   }
-}).omit({ id: true })
+})
 
 const hello = procedures.public
   .meta(openapi({ method: 'GET', path: '/hello', summary: 'Get a greeting' }))
