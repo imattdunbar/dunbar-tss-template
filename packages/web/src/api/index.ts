@@ -14,6 +14,7 @@ import { OpenAPIGenerator } from '@orpc/openapi'
 import { ZodToJsonSchemaConverter } from '@orpc/zod'
 import type { ApiContext } from '@web/api/procedures'
 import { apiRouter } from '@web/api/router'
+import { auth } from '@web/api/auth/server'
 
 // Main hono app
 export const app = new Hono({ strict: false }).basePath('/api')
@@ -70,6 +71,9 @@ app.notFound(() =>
     import.meta.env.DEV
   )
 )
+
+// Better Auth handlers
+app.on(['GET', 'POST'], '/auth/*', c => auth.handler(c.req.raw))
 
 // RPC handlers from ORPC
 app.use('/rpc/*', async (c, next) => {

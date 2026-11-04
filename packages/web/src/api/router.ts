@@ -2,6 +2,7 @@ import { openapi } from '@orpc/openapi'
 import { desc } from 'drizzle-orm'
 import { createInsertSchema, createSelectSchema } from 'drizzle-orm/zod'
 import { z } from 'zod'
+import { authenticationSchema } from '@web/api/auth/authenticate'
 import procedures from '@web/api/procedures'
 import { db, schema } from '@web/db/client'
 
@@ -42,8 +43,16 @@ const createPost = procedures.public
     return post
   })
 
+const me = procedures.authed
+  .meta(openapi({ method: 'GET', path: '/me', summary: 'Get the authenticated user' }))
+  .output(authenticationSchema)
+  .handler(async opts => {
+    return opts.context.auth
+  })
+
 export const apiRouter = {
   hello,
+  me,
   posts: {
     list: listPosts,
     create: createPost

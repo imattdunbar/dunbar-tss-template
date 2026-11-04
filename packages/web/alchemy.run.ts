@@ -1,5 +1,6 @@
 import * as Alchemy from 'alchemy'
 import * as Cloudflare from '@alchemy.run/cloudflare'
+import * as Config from 'effect/Config'
 import * as Effect from 'effect/Effect'
 import * as Layer from 'effect/Layer'
 
@@ -15,6 +16,9 @@ export const Database = Cloudflare.D1.Database(
   )
 )
 
+// Generated once per stage and kept in state, so sessions survive restarts and deploys.
+const betterAuthSecret = Alchemy.makeRandom('BetterAuthSecret')
+
 export const Website = Cloudflare.Website.Vite(
   'Website',
   Alchemy.Stage.pipe(
@@ -26,7 +30,10 @@ export const Website = Cloudflare.Website.Vite(
         strictPort: true
       },
       env: {
-        DB: Database
+        DB: Database,
+        BETTER_AUTH_SECRET: betterAuthSecret,
+        // Deployed stages have no fixed domain in this template; supply it at deploy time.
+        BETTER_AUTH_URL: stage === 'local' ? 'http://localhost:7777' : Config.NonEmptyString('BETTER_AUTH_URL')
       }
     }))
   )

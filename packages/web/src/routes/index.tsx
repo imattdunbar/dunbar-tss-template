@@ -33,9 +33,14 @@ function Home() {
           <h1 className="text-2xl font-semibold">Dunbar Template</h1>
           <p className="text-muted-foreground text-sm">A simple post example backed by D1.</p>
         </div>
-        <Link to="/demo" className={buttonVariants({ variant: 'outline' })}>
-          Component workshop
-        </Link>
+        <nav aria-label="Examples" className="grid gap-2">
+          <Link to="/demo" className={buttonVariants({ variant: 'outline' })}>
+            Component workshop
+          </Link>
+          <Link to="/test-auth" className={buttonVariants({ variant: 'outline' })}>
+            Test auth
+          </Link>
+        </nav>
       </header>
 
       <form
