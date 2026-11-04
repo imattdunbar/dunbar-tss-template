@@ -1,20 +1,13 @@
 import { openapi } from '@orpc/openapi'
-import { os } from '@orpc/server'
 import { z } from 'zod'
-import { apiErrors } from '@web/api/errors'
+import procedures from '@web/api/procedures'
 
-export type ApiContext = {
-  headers: Headers
-}
-
-const procedure = os.$context<ApiContext>().errors(apiErrors)
-
-const hello = procedure
+const hello = procedures.public
   .meta(openapi({ method: 'GET', path: '/hello', summary: 'Get a greeting' }))
   .input(z.object({ name: z.string().trim().min(1).max(100).default('World') }))
   .output(z.object({ message: z.string() }))
-  .handler(async ({ input }) => {
-    return { message: `Hello, ${input.name}!` }
+  .handler(async opts => {
+    return { message: `Hello, ${opts.input.name}!` }
   })
 
 export const apiRouter = {

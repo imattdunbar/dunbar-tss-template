@@ -2,6 +2,7 @@ import { OpenAPIHandler } from '@orpc/openapi/fetch'
 import { OpenAPIReferenceHandlerPlugin } from '@orpc/openapi/plugins'
 import { ORPCError } from '@orpc/server'
 import { RPCHandler } from '@orpc/server/fetch'
+import { ResponseHeadersHandlerPlugin } from '@orpc/server/plugins'
 import { Hono } from 'hono'
 import {
   apiErrorStatusMap,
@@ -11,25 +12,36 @@ import {
 } from '@web/api/errors'
 import { OpenAPIGenerator } from '@orpc/openapi'
 import { ZodToJsonSchemaConverter } from '@orpc/zod'
-import { apiRouter, type ApiContext } from '@web/api/router'
+import type { ApiContext } from '@web/api/procedures'
+import { apiRouter } from '@web/api/router'
 
+// Main hono app
 export const app = new Hono({ strict: false }).basePath('/api')
+
+// ORPC handler options / error interceptor
 const errorInterceptor = createApiErrorInterceptor(import.meta.env.DEV)
 
 const handlerOptions = {
   errorStatusMap: apiErrorStatusMap,
+  // Procedures set headers through context.resHeaders; the plugin adds them to the response.
+  plugins: [new ResponseHeadersHandlerPlugin<ApiContext>()],
   interceptors: [createApiHandlerErrorInterceptor<ApiContext>(import.meta.env.DEV)],
   clientInterceptors: [errorInterceptor]
 }
 
+// RPC handler
 const rpcHandler = new RPCHandler(apiRouter, handlerOptions)
+
+// OpenAPI generator
 const generator = new OpenAPIGenerator({
   converters: [new ZodToJsonSchemaConverter()]
 })
 
+// Regular REST handler + OpenAPI docs config
 const openApiHandler = new OpenAPIHandler(apiRouter, {
   ...handlerOptions,
   plugins: [
+    ...handlerOptions.plugins,
     new OpenAPIReferenceHandlerPlugin({
       docsPath: '/docs',
       specPath: '/openapi.json',
@@ -46,8 +58,10 @@ const openApiHandler = new OpenAPIHandler(apiRouter, {
   ]
 })
 
-app.onError((error) => createApiErrorResponse(error, import.meta.env.DEV))
+// Global error handler
+app.onError(error => createApiErrorResponse(error, import.meta.env.DEV))
 
+// Not found
 app.notFound(() =>
   createApiErrorResponse(
     new ORPCError('NOT_FOUND', {
@@ -57,6 +71,7 @@ app.notFound(() =>
   )
 )
 
+// RPC handlers from ORPC
 app.use('/rpc/*', async (c, next) => {
   const result = await rpcHandler.handle(c.req.raw, {
     prefix: '/api/rpc',
@@ -67,6 +82,7 @@ app.use('/rpc/*', async (c, next) => {
   return c.newResponse(result.response.body, result.response)
 })
 
+// Regular REST handlers from ORPC
 app.use('*', async (c, next) => {
   const result = await openApiHandler.handle(c.req.raw, {
     prefix: '/api',
