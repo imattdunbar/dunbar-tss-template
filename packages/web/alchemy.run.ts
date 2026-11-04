@@ -1,18 +1,63 @@
 import * as Alchemy from 'alchemy'
-import * as Command from 'alchemy/Command'
+import * as Cloudflare from '@alchemy.run/cloudflare'
 import * as Effect from 'effect/Effect'
+import * as Layer from 'effect/Layer'
+
+const PROJECT_NAME = 'dunbar-template'
+
+export const Database = Cloudflare.D1.Database(
+  'Database',
+  Alchemy.Stage.pipe(
+    Effect.map((stage) => ({
+      name: stage === 'prod' ? `${PROJECT_NAME}-db` : `${PROJECT_NAME}-db-${stage}`,
+      migrations: './src/db/migrations'
+    }))
+  )
+)
+
+export const Website = Cloudflare.Website.Vite(
+  'Website',
+  Alchemy.Stage.pipe(
+    Effect.map((stage) => ({
+      name: stage === 'prod' ? PROJECT_NAME : `${PROJECT_NAME}-${stage}`,
+      dev: {
+        host: '0.0.0.0',
+        port: 7777,
+        strictPort: true
+      },
+      env: {
+        DB: Database
+      }
+    }))
+  )
+)
+
+export type WebsiteEnv = Cloudflare.InferEnv<typeof Website>
+
+const state = Layer.unwrap(
+  Effect.gen(function* () {
+    const stage = yield* Alchemy.Stage
+
+    // Local development must not bootstrap the remote state backend.
+    if (stage === 'local') return Alchemy.localState()
+
+    return Cloudflare.state()
+  })
+)
 
 export default Alchemy.Stack(
-  'Dunbar',
+  PROJECT_NAME,
   {
-    providers: Command.providers(),
-    state: Alchemy.localState()
+    providers: Cloudflare.providers(),
+    state
   },
   Effect.gen(function* () {
-    const web = yield* Command.Dev('Web', {
-      command: 'bun run dev:vite'
-    })
+    const database = yield* Database
+    const website = yield* Website
 
-    return { url: web.url }
+    return {
+      databaseName: database.databaseName,
+      url: website.url
+    }
   })
 )

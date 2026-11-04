@@ -1,6 +1,17 @@
 import { openapi } from '@orpc/openapi'
+import { desc } from 'drizzle-orm'
+import { createInsertSchema, createSelectSchema } from 'drizzle-orm/zod'
 import { z } from 'zod'
 import procedures from '@web/api/procedures'
+import { db, schema } from '@web/db/client'
+
+const postSelectSchema = createSelectSchema(schema.posts)
+
+const postInsertSchema = createInsertSchema(schema.posts, {
+  text: field => {
+    return field.trim().min(1, 'Enter some text for the post.').max(2000)
+  }
+}).omit({ id: true })
 
 const hello = procedures.public
   .meta(openapi({ method: 'GET', path: '/hello', summary: 'Get a greeting' }))
@@ -10,6 +21,31 @@ const hello = procedures.public
     return { message: `Hello, ${opts.input.name}!` }
   })
 
+const listPosts = procedures.public
+  .meta(openapi({ method: 'GET', path: '/posts', summary: 'List posts' }))
+  .output(z.array(postSelectSchema))
+  .handler(async () => {
+    const posts = await db.select().from(schema.posts).orderBy(desc(schema.posts.id))
+
+    return posts
+  })
+
+const createPost = procedures.public
+  .meta(openapi({ method: 'POST', path: '/posts', summary: 'Create a post', successStatus: 201 }))
+  .input(postInsertSchema)
+  .output(postSelectSchema)
+  .handler(async opts => {
+    const [post] = await db.insert(schema.posts).values(opts.input).returning()
+
+    if (!post) throw opts.errors.INTERNAL_SERVER_ERROR()
+
+    return post
+  })
+
 export const apiRouter = {
-  hello
+  hello,
+  posts: {
+    list: listPosts,
+    create: createPost
+  }
 }
