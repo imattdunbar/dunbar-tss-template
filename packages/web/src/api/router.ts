@@ -9,10 +9,14 @@ export type ApiContext = {
 
 const procedure = os.$context<ApiContext>().errors(apiErrors)
 
+const hello = procedure
+  .meta(openapi({ method: 'GET', path: '/hello', summary: 'Get a greeting' }))
+  .input(z.object({ name: z.string().trim().min(1).max(100).default('World') }))
+  .output(z.object({ message: z.string() }))
+  .handler(async ({ input }) => {
+    return { message: `Hello, ${input.name}!` }
+  })
+
 export const apiRouter = {
-  hello: procedure
-    .meta(openapi({ method: 'GET', path: '/hello', summary: 'Get a greeting' }))
-    .input(z.object({ name: z.string().trim().min(1).max(100).default('World') }))
-    .output(z.object({ message: z.string() }))
-    .handler(({ input }) => ({ message: `Hello, ${input.name}!` }))
+  hello
 }
