@@ -1,6 +1,6 @@
 import { defineRelations } from 'drizzle-orm'
 import { integer, pgTable, text } from 'drizzle-orm/pg-core'
-import { account, apikey, authRelations, jwks, session, user, verification } from './auth'
+import { account, apikey, authRelations, jwks, oauthClientAssertion, session, user, verification } from './auth'
 
 export * from './auth'
 
@@ -11,6 +11,6 @@ export const posts = pgTable('posts', {
 
 // The generated relation part omits tables without foreign keys, such as apikey and jwks.
 export const relations = {
-  ...defineRelations({ posts, account, apikey, jwks, session, user, verification }),
+  ...defineRelations({ posts, account, apikey, jwks, oauthClientAssertion, session, user, verification }),
   ...authRelations
 }

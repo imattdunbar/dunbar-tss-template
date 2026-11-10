@@ -19,8 +19,10 @@
     "typescript": "catalog:"
   },
   "catalog": {
+    "@modelcontextprotocol/server": "2.4.0",
     "@orpc/client": "2.0.0-beta.50",
     "@orpc/contract": "2.0.0-beta.50",
+    "@orpc/mcp": "2.0.0-beta.50",
     "@orpc/openapi": "2.0.0-beta.50",
     "@orpc/server": "2.0.0-beta.50",
     "@orpc/tanstack-query": "2.0.0-beta.50",

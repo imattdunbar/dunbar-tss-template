@@ -15,8 +15,12 @@
   "dependencies": {
     "@better-auth/api-key": "1.7.17",
     "@better-auth/drizzle-adapter": "1.7.17",
+    "@better-auth/mcp": "1.7.17",
+    "@better-auth/oauth-provider": "1.7.17",
     "@dunbar/shared-template": "workspace:*",
     "@dunbar/ui-template": "workspace:*",
+    "@modelcontextprotocol/server": "catalog:",
+    "@orpc/mcp": "catalog:",
     "@orpc/openapi": "catalog:",
     "@orpc/server": "catalog:",
     "@orpc/zod": "catalog:",

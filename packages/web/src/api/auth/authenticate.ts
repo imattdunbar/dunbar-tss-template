@@ -7,7 +7,7 @@ import { db } from '@web/db/client'
 export const authenticationSchema = z.object({
   userId: z.string(),
   email: z.string(),
-  type: z.enum(['session', 'api-key', 'jwt'])
+  type: z.enum(['session', 'api-key', 'jwt', 'oauth'])
 })
 
 export type Authentication = z.infer<typeof authenticationSchema>
@@ -41,6 +41,11 @@ async function loadUser(userId: string, type: AuthenticationType): Promise<Authe
   if (!user) return null
 
   return { userId: user.id, email: user.email, type }
+}
+
+/** Resolves the subject of a verified OAuth access token to a current user. */
+export function authenticateOAuth(userId: string) {
+  return loadUser(userId, 'oauth')
 }
 
 async function authenticateApiKey(headers: Headers, key: string): Promise<AuthResult | null> {
