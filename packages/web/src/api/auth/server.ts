@@ -72,6 +72,11 @@ export const auth = new Proxy({} as Auth, {
     instance ??= createAuth()
     return Reflect.get(instance, key)
   },
+  // Keep `key in auth` checks consistent with property access.
+  has: (_, key) => {
+    instance ??= createAuth()
+    return Reflect.has(instance, key)
+  },
   // The auth schema CLI enumerates and copies properties; without these traps it sees an empty object.
   // CLI access also creates the instance so the schema generator can inspect the auth configuration.
   ownKeys: () => {
