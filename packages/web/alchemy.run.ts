@@ -112,6 +112,8 @@ export const Website = Cloudflare.Website.Vite(
 
     return {
       name,
+      // Custom Worker entry: routes endpoints through Hono and exports Cloudflare binding classes.
+      main: './src/entry.ts',
       compatibility: { flags: ['nodejs_compat'] },
       dev: {
         host: '0.0.0.0',
