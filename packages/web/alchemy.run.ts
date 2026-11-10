@@ -112,6 +112,7 @@ export const Website = Cloudflare.Website.Vite(
 
     return {
       name,
+      main: './src/entry.ts',
       compatibility: { flags: ['nodejs_compat'] },
       dev: {
         host: '0.0.0.0',
