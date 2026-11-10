@@ -12,5 +12,5 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true
   },
-  plugins: [tailwindcss(), tanstackStart(), react()]
+  plugins: [tailwindcss(), tanstackStart({ server: { entry: 'entry.ts' } }), react()]
 })

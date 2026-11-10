@@ -1,14 +1,10 @@
-# Base Template
+# Start a project
+
+Each branch of this repo represents a different template, all stemming from the `main` branch.
+You'll want to replace in the command below `$BRANCH_NAME` with whatever branch/template you want to target.
 
 ```sh
-bunx gitpick imattdunbar/dunbar-tss-template/tree/main PROJECT_NAME
-cd PROJECT_NAME
-```
-
-For the Cloudflare Workers + D1 variant:
-
-```sh
-bunx gitpick imattdunbar/dunbar-tss-template/tree/cloudflare-d1 PROJECT_NAME
+bunx gitpick imattdunbar/dunbar-tss-template/tree/$BRANCH_NAME PROJECT_NAME
 cd PROJECT_NAME
 ```
 
