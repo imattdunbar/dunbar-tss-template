@@ -1,4 +1,4 @@
-import { betterAuth } from 'better-auth'
+import { betterAuth, type BetterAuthOptions } from 'better-auth'
 import { jwt } from 'better-auth/plugins/jwt'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { apiKey } from '@better-auth/api-key'
@@ -10,7 +10,8 @@ import { db, schema } from '@web/db/client'
 export const API_KEY_PREFIX = 'dt_'
 export const JWT_AUDIENCE = 'dunbar-native'
 
-const createAuth = () => betterAuth({
+// Plain options let the schema CLI read the configuration without plugin startup.
+export const authOptions = {
   // Alchemy binds these to the Worker; process.env does not contain them in workerd.
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
@@ -37,7 +38,9 @@ const createAuth = () => betterAuth({
     }),
     tanstackStartCookies()
   ]
-})
+} satisfies BetterAuthOptions
+
+const createAuth = () => betterAuth(authOptions)
 
 // Keep the exact Better Auth type so callers retain autocomplete and plugin API types.
 type Auth = ReturnType<typeof createAuth>
@@ -57,18 +60,5 @@ export const auth = new Proxy({} as Auth, {
   has: (_, key) => {
     instance ??= createAuth()
     return Reflect.has(instance, key)
-  },
-  // The auth schema CLI enumerates and copies properties; without these traps it sees an empty object.
-  // CLI access also creates the instance so the schema generator can inspect the auth configuration.
-  ownKeys: () => {
-    instance ??= createAuth()
-    return Reflect.ownKeys(instance)
-  },
-  getOwnPropertyDescriptor: (_, key) => {
-    instance ??= createAuth()
-    // Preserve property metadata, such as whether object spread can copy the property.
-    const descriptor = Reflect.getOwnPropertyDescriptor(instance, key)
-    // A proxy cannot report a fixed property that does not exist on its empty target.
-    return descriptor && { ...descriptor, configurable: true }
   }
 })
