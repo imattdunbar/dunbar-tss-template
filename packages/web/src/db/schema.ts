@@ -1,3 +1,4 @@
+import '@tanstack/react-start/server-only'
 import { defineRelations } from 'drizzle-orm'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { account, apikey, authRelations, jwks, session, user, verification } from './auth'
