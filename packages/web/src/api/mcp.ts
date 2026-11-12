@@ -1,6 +1,7 @@
 import { requireMcpAuth } from '@better-auth/mcp'
 import { createMcpHandler, McpServer } from '@modelcontextprotocol/server'
 import { McpRegistrar } from '@orpc/mcp'
+import { ORPCError } from '@orpc/server'
 import { ZodToJsonSchemaConverter } from '@orpc/zod'
 import { authenticateOAuth, authenticationSchema } from '@web/api/auth/authenticate'
 import { auth, MCP_RESOURCE, MCP_SCOPES } from '@web/api/auth/server'
@@ -30,7 +31,7 @@ export const handleMcpRequest = requireMcpAuth(
   auth,
   async (request, claims) => {
     const caller = claims.sub ? await authenticateOAuth(claims.sub) : null
-    if (!caller) return new Response('Unknown user', { status: 401 })
+    if (!caller) throw new ORPCError('UNAUTHORIZED', { message: 'Unknown user' })
 
     return mcpHandler.fetch(request, {
       authInfo: {
