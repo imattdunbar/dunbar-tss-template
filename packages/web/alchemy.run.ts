@@ -8,7 +8,82 @@ import * as Effect from 'effect/Effect'
 import * as Layer from 'effect/Layer'
 import * as Redacted from 'effect/Redacted'
 
+// Template settings. Keep LOCAL_DB aligned with docker-compose.yml.
 const PROJECT_NAME = 'dunbar-template'
+const DEV_PORT = 7777
+const DEV_DB_NAME = 'dunbar_dev'
+const PROD_DB_NAME = 'dunbar_prod'
+const PLANETSCALE_BRANCH = 'main'
+const LOCAL_DB = {
+  host: '127.0.0.1',
+  port: 5432,
+  database: 'dunbar_local',
+  user: 'dunbar',
+  password: 'dunbar'
+}
+
+// URL setters encode credentials; string interpolation does not.
+const postgresUrl = (db: typeof LOCAL_DB, sslmode: 'disable' | 'verify-full') => {
+  const url = new URL(`postgresql://${db.host}:${db.port}/${db.database}`)
+  url.username = db.user
+  url.password = db.password
+  url.searchParams.set('sslmode', sslmode)
+  return Redacted.make(url.toString())
+}
+
+const localConnection = Effect.gen(function* () {
+  const docker = yield* Command.Exec('LocalDatabase', {
+    command: 'docker compose up -d --wait db',
+    cwd: '../..',
+    memo: false
+  })
+
+  const origin: Cloudflare.Hyperdrive.PublicOrigin = {
+    ...LOCAL_DB,
+    scheme: 'postgres',
+    password: Redacted.make(LOCAL_DB.password)
+  }
+
+  return {
+    origin: Output.asOutput(origin),
+    dev: Output.asOutput({ ...origin, sslmode: 'disable' as const }),
+    // The output dependency makes migrations wait for Docker readiness.
+    migrationUrl: Output.map(docker.hash, () => postgresUrl(LOCAL_DB, 'disable'))
+  }
+})
+
+const remoteConnection = (stage: 'dev' | 'prod') =>
+  Effect.gen(function* () {
+    const cluster = yield* Config.NonEmptyString('PLANETSCALE_CLUSTER').pipe(Effect.orDie)
+    const database = stage === 'prod' ? PROD_DB_NAME : DEV_DB_NAME
+
+    const applicationRole = yield* Planetscale.PostgresRole('ApplicationRole', {
+      database: cluster,
+      branch: PLANETSCALE_BRANCH,
+      inheritedRoles: ['pg_read_all_data', 'pg_write_all_data']
+    })
+
+    const migrationRole = yield* Planetscale.PostgresRole('MigrationRole', {
+      database: cluster,
+      branch: PLANETSCALE_BRANCH,
+      inheritedRoles: ['postgres']
+    })
+
+    return {
+      origin: Output.map(applicationRole.origin, origin => ({ ...origin, database })),
+      dev: Output.map(applicationRole.pooledOrigin, origin => ({
+        ...origin,
+        database,
+        sslmode: 'verify-full' as const
+      })),
+      migrationUrl: Output.map(migrationRole.origin, origin =>
+        postgresUrl(
+          { ...origin, database, password: Redacted.value(origin.password) },
+          'verify-full'
+        )
+      )
+    }
+  })
 
 export const Database = Cloudflare.Hyperdrive.Connection(
   'Database',
@@ -19,64 +94,7 @@ export const Database = Cloudflare.Hyperdrive.Connection(
       return yield* Effect.die(new Error(`Unsupported database stage: ${stage}`))
     }
 
-    const connection = yield* Effect.gen(function* () {
-      if (stage === 'local') {
-        const docker = yield* Command.Exec('LocalDatabase', {
-          command: 'docker compose up -d --wait db',
-          cwd: '../..',
-          memo: false
-        })
-
-        const origin: Cloudflare.Hyperdrive.PublicOrigin = {
-          scheme: 'postgres',
-          host: '127.0.0.1',
-          port: 5432,
-          database: 'dunbar_local',
-          user: 'dunbar',
-          password: Redacted.make('dunbar')
-        }
-
-        return {
-          origin: Output.asOutput(origin),
-          dev: Output.asOutput({ ...origin, sslmode: 'disable' as const }),
-          // The output dependency makes migrations wait for Docker readiness.
-          migrationUrl: Output.map(docker.hash, () =>
-            Redacted.make('postgresql://dunbar:dunbar@127.0.0.1:5432/dunbar_local?sslmode=disable')
-          )
-        }
-      }
-
-      const cluster = yield* Config.NonEmptyString('PLANETSCALE_CLUSTER').pipe(Effect.orDie)
-      const database = stage === 'prod' ? 'dunbar_prod' : 'dunbar_dev'
-
-      const applicationRole = yield* Planetscale.PostgresRole('ApplicationRole', {
-        database: cluster,
-        branch: 'main',
-        inheritedRoles: ['pg_read_all_data', 'pg_write_all_data']
-      })
-
-      const migrationRole = yield* Planetscale.PostgresRole('MigrationRole', {
-        database: cluster,
-        branch: 'main',
-        inheritedRoles: ['postgres']
-      })
-
-      return {
-        origin: Output.map(applicationRole.origin, origin => ({ ...origin, database })),
-        dev: Output.map(applicationRole.pooledOrigin, origin => ({
-          ...origin,
-          database,
-          sslmode: 'verify-full' as const
-        })),
-        migrationUrl: Output.map(migrationRole.origin, origin => {
-          const url = new URL(`postgresql://${origin.host}:${origin.port}/${database}`)
-          url.username = origin.user
-          url.password = Redacted.value(origin.password)
-          url.searchParams.set('sslmode', 'verify-full')
-          return Redacted.make(url.toString())
-        })
-      }
-    })
+    const connection = stage === 'local' ? yield* localConnection : yield* remoteConnection(stage)
 
     const migrations = yield* Command.Exec('DatabaseMigrations', {
       command: 'bun run db:migrate',
@@ -104,7 +122,7 @@ export const Website = Cloudflare.Website.Vite(
     const stage = yield* Alchemy.Stage
     const name = stage === 'prod' ? PROJECT_NAME : `${PROJECT_NAME}-${stage}`
     const betterAuthUrl = yield* Effect.gen(function* () {
-      if (stage === 'local') return 'http://localhost:7777'
+      if (stage === 'local') return `http://localhost:${DEV_PORT}`
       if (stage === 'dev') return Cloudflare.Worker.URL
 
       return yield* Config.NonEmptyString('BETTER_AUTH_URL').pipe(Effect.orDie)
@@ -117,7 +135,7 @@ export const Website = Cloudflare.Website.Vite(
       compatibility: { flags: ['nodejs_compat'] },
       dev: {
         host: '0.0.0.0',
-        port: 7777,
+        port: DEV_PORT,
         strictPort: true
       },
       env: {
@@ -131,15 +149,7 @@ export const Website = Cloudflare.Website.Vite(
 
 export type WebsiteEnv = Cloudflare.InferEnv<typeof Website>
 
-const providers = Layer.unwrap(
-  Effect.gen(function* () {
-    const stage = yield* Alchemy.Stage
-
-    if (stage === 'local') return Cloudflare.providers()
-
-    return Layer.mergeAll(Cloudflare.providers(), Planetscale.providers())
-  })
-)
+const providers = Layer.mergeAll(Cloudflare.providers(), Planetscale.providers())
 
 const state = Layer.unwrap(
   Effect.gen(function* () {
@@ -154,10 +164,7 @@ const state = Layer.unwrap(
 
 export default Alchemy.Stack(
   PROJECT_NAME,
-  {
-    providers,
-    state
-  },
+  { providers, state },
   Effect.gen(function* () {
     const stage = yield* Alchemy.Stage
     const website = yield* Website
