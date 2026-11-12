@@ -6,7 +6,7 @@
     "dev": "alchemy dev alchemy.run.ts --stage local",
     "deploy:dev": "alchemy deploy alchemy.run.ts --stage dev",
     "deploy:prod": "alchemy deploy alchemy.run.ts --stage prod",
-    "db:generate:auth": "auth generate --config ./src/api/auth/server.ts --output ./src/db/auth.ts --yes",
+    "db:generate:auth": "auth generate --config ./src/api/auth/config.ts --output ./src/db/auth.ts --yes",
     "db:generate": "bun run db:generate:auth && drizzle-kit generate --config src/db/drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config src/db/drizzle.config.ts",
     "build": "vite build",

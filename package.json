@@ -11,6 +11,7 @@
     "web": "bun --cwd packages/web",
     "ui": "bun --cwd packages/ui",
     "format": "bunx oxfmt",
+    "nuke": "rm -rf packages/web/.alchemy",
     "typecheck": "bun run --filter './packages/*' typecheck"
   },
   "devDependencies": {
