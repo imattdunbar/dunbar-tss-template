@@ -1,3 +1,5 @@
+import '@tanstack/react-start/server-only'
+import type { RouterClient } from '@orpc/server'
 import { openapi } from '@orpc/openapi'
 import { desc } from 'drizzle-orm'
 import { createInsertSchema, createSelectSchema } from 'drizzle-orm/zod'
@@ -49,3 +51,5 @@ export const apiRouter = {
     create: createPost
   }
 }
+
+export type ApiClient = RouterClient<typeof apiRouter>
