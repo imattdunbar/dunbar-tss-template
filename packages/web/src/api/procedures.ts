@@ -26,9 +26,16 @@ const publicProcedure = base
 
 /** Rejects with UNAUTHORIZED unless a session, JWT, or API key verifies. */
 const authedProcedure = base.use(async opts => {
-  const result: AuthResult | null = opts.context.auth
-    ? { auth: opts.context.auth }
-    : await authenticate(opts.context.headers)
+  let result: AuthResult | null
+
+  // Get auth from request options
+  if (opts.context.auth) {
+    result = { auth: opts.context.auth }
+  } else {
+    // If not, attempt to authenticate the user from the headers
+    result = await authenticate(opts.context.headers)
+  }
+
   if (!result) throw opts.errors.UNAUTHORIZED()
 
   // Native clients replace their stored token when this header appears.
