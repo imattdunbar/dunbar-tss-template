@@ -1,3 +1,5 @@
+import '@tanstack/react-start/server-only'
+import type { RouterClient } from '@orpc/server'
 import { openapi } from '@orpc/openapi'
 import { z } from 'zod'
 import procedures from '@web/api/procedures'
@@ -13,3 +15,5 @@ const hello = procedures.public
 export const apiRouter = {
   hello
 }
+
+export type ApiClient = RouterClient<typeof apiRouter>
