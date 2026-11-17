@@ -3,8 +3,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./api/client": "./api/client.ts",
-    "./api/query": "./api/query.ts"
+    "./api/client": "./api/client.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

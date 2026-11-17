@@ -1,4 +1,4 @@
-import { createApiClient, createApiQueryUtils, type ApiClient } from '@dunbar/shared-template/api/client'
+import { createApiClient, createQueryUtils, type ApiClient } from '@dunbar/shared-template/api/client'
 import { createRouterClient } from '@orpc/server'
 import { createIsomorphicFn } from '@tanstack/react-start'
 import { getRequestHeaders } from '@tanstack/react-start/server'
@@ -16,4 +16,4 @@ const getApiClient = createIsomorphicFn()
   .client(() => createApiClient())
 
 export const apiClient = getApiClient()
-export const orpc = createApiQueryUtils(apiClient)
+export const orpc = createQueryUtils(apiClient)
