@@ -1,4 +1,14 @@
+/**
+ * Each consumer creates its own client and query utilities:
+ *
+ * const apiClient = createApiClient({ origin: 'https://api.example.com' })
+ * const orpc = createQueryUtils(apiClient)
+ *
+ * The web package uses the router directly for server renders (web/src/api/client.ts).
+ */
+
 import type { InferClientOutputs } from '@orpc/client'
+// Type-only: a value import here can pull server code into browser clients.
 import type { ApiClient } from '@web/api/router'
 
 import { createORPCClient } from '@orpc/client'
@@ -22,7 +32,8 @@ export function createApiClient(options: ClientOptions = {}): ApiClient {
   )
 }
 
-export const createApiQueryUtils = (client: ApiClient) => createTanstackQueryUtils(client)
+// A shared export keeps consumers independent of the query adapter package.
+export const createQueryUtils = createTanstackQueryUtils
 
 export type { ApiClient }
 export type ApiOutputs = InferClientOutputs<ApiClient>
